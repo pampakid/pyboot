@@ -1,10 +1,35 @@
 # backend/config.py - Configuration settings
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 
 load_dotenv()
 
 class Config:
     """Base configuration"""
-    SECRET_KEY = os.getenv('SECRET_KEY', 'd22f34e1e5343d04a824d4872dc75b3e')
-    DEBUG = os.getenv('FLASK_DEBUG', True)
+    # SQLAlchemy settings
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///pyboot.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # Flask settings
+    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-default-key')
+
+class DevelopmentConfig(Config):
+    """Development configuration"""
+    DEBUG = True
+
+class TestingConfig(Config):
+    """Testing configuration"""
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
+
+class ProductionConfig(Config):
+    """Production configuration"""
+    DEBUG = False
+
+# Dictionary to map configuration names to objects
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
+}
