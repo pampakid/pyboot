@@ -1,6 +1,6 @@
 # backend/models/task.py
 from datetime import datetime
-from backend.extensions import db
+from ..extensions import db  # Changed to relative import
 
 class Task(db.Model):
     """Task model for storing task-related data."""
@@ -12,10 +12,6 @@ class Task(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     due_date = db.Column(db.DateTime)
     completed = db.Column(db.Boolean, default=False)
-
-    def __repr__(self):
-        """Return string representation of the task."""
-        return f'<Task {self.title}>'
 
     def to_dict(self):
         """Convert task to dictionary."""
