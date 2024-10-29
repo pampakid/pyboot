@@ -1,12 +1,14 @@
 # backend/routes/main.py - Basic routes
 from flask import Blueprint, jsonify
 
-bp = Blueprint('main', __name__)
+main_bp = Blueprint('main', __name__)
 
-@bp.route('/')
+@main_bp.route('/')
 def home():
-    return jsonify({'message': 'Welcome to Pyboot API'})
+    """Home endpoint."""
+    return jsonify({'message': 'Welcome to Pyboot API!'})
 
-@bp.route('/health')
+@main_bp.route('/health')
 def health():
+    """Health check endpoint."""
     return jsonify({'status': 'healthy'})
