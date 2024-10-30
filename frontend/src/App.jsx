@@ -1,7 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useTasks } from './hooks/useTasks';
 
 export default function App() {
   const [currentView, setCurrentView] = useState('tasks');
+  const { tasks, loading, error, fetchTasks } = useTasks();
+
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -43,10 +49,61 @@ export default function App() {
 
       {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 bg-red-50 border-l-4 border-red-400 p-4">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <span className="text-red-400">⚠</span>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-red-700">
+                  {error}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Content Views */}
         {currentView === 'tasks' && (
           <div className="bg-white shadow rounded-lg p-6">
             <h2 className="text-lg font-medium text-gray-900 mb-4">All Tasks</h2>
-            <p className="text-gray-500">Task list will go here</p>
+            
+            {loading ? (
+              <div className="flex justify-center py-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+              </div>
+            ) : tasks.length === 0 ? (
+              <p className="text-gray-500 text-center py-4">
+                No tasks found. Create your first task!
+              </p>
+            ) : (
+              <ul className="divide-y divide-gray-200">
+                {tasks.map(task => (
+                  <li key={task.id} className="py-4">
+                    <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={task.completed}
+                        className="h-4 w-4 text-blue-600 rounded border-gray-300"
+                        onChange={() => {/* Will implement in TaskList component */}}
+                      />
+                      <div className="ml-3">
+                        <p className={`text-sm font-medium ${
+                          task.completed ? 'text-gray-400 line-through' : 'text-gray-900'
+                        }`}>
+                          {task.title}
+                        </p>
+                        {task.description && (
+                          <p className="text-sm text-gray-500">{task.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         )}
         
