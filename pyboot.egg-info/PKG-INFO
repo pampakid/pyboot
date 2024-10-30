@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: pyboot
+Version: 0.1.0
+Requires-Dist: flask
+Requires-Dist: flask-sqlalchemy
+Requires-Dist: flask-cors
+Requires-Dist: python-dotenv
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-flask; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
